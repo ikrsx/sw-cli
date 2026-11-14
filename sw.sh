@@ -11,7 +11,10 @@ read_cache() {
 }
 
 get_weather() {
-  local CACHE_FILE="$HOME/.cache/sw"
+  local CACHE_DIR="$HOME/.cache"
+  local CACHE_FILE="$CACHE_DIR/sw"
+
+  [[ -d  $CACHE_DIR ]] || mkdir -p "$CACHE_DIR"
   curl "wttr.in/$1" 2> /dev/null > "$CACHE_FILE" && cat "$CACHE_FILE"
 }
 
