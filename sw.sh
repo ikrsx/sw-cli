@@ -10,10 +10,17 @@ read_cache() {
   [[ -e $CACHE_FILE ]] && cat "$CACHE_FILE" && return 0
 }
 
-if ! check_connection;then
+get_weather() {
+  local CACHE_FILE="$HOME/.cache/sw"
+  curl "wttr.in/$1" 2> /dev/null > "$CACHE_FILE" && cat "$CACHE_FILE"
+}
+
+if check_connection;then
+  get_weather "$1"
+else
   echo "Cannot create connection." > /dev/stderr
   if ! read_cache; then
     echo "Cannot read from cache." > /dev/stderr
-    exit 1
   fi
+  exit 1
 fi
